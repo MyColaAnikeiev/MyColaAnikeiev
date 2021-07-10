@@ -6,7 +6,7 @@ let ctx = source_canvas.getContext("2d");
 let preview_canvas = document.getElementById('preview-canvas');
 let preview_context = preview_canvas.getContext('2d');
 let canvas_width = canvas_container.clientWidth - 2; // 2 padding
-let canvas_height = 360;
+let canvas_height = 430;
 source_canvas.setAttribute("width", String(canvas_width));
 source_canvas.setAttribute("height", String(canvas_height));
 RTools.setCanvas(source_canvas);
