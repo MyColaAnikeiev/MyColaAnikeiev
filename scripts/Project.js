@@ -12,6 +12,7 @@ class Project {
             framesMassPosotioning: false,
             frameEditingMode: false,
             frameSelected: false,
+            frameMiddlePointSelection: false,
             cropFrameDrag: false
         };
         this.spriteWidth = img.width;

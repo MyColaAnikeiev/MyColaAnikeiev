@@ -77,7 +77,7 @@ var EditingTools;
         let nameField = document.createElement('div');
         let closer = document.createElement('div');
         el.className = 'anim-list-item';
-        input.type = 'txt';
+        input.type = 'text';
         input.placeholder = 'Animation name';
         nameField.style.display = 'none';
         nameField.className = 'anim-name';
@@ -373,16 +373,19 @@ var EditingTools;
     function getFrameSelectionHandler() {
         return function (evt) {
             let selectedInd;
-            if (flags.cropFrameDrag)
-                return;
             /* When selected:
             /*  1) See if crop draging, else
+             *  2) See if middle point selection, else
              *  2) If clicked other place then unselect, else
              *  2) See if new selection
              */
+            if (flags.cropFrameDrag || flags.frameMiddlePointSelection) {
+                return;
+            }
             if (flags.frameSelected) {
-                if (selectedFrameHandlers.cropDragStart(evt))
+                if (selectedFrameHandlers.cropDragStart(evt)) {
                     return;
+                }
                 selectedInd = findSelectedFrameIndex(evt);
                 if (selectedInd == -1) {
                     selectedFrameStateExit();
@@ -431,10 +434,52 @@ var EditingTools;
             getSelectedFrameIndicatorHandler(selectedInd);
         document.body.addEventListener("mousemove", selectedFrameHandlers.cursorIndicator);
         selectedFrameHandlers.cropDragStart = getSelectedFrameDragStart(selectedInd);
+        selectedFrameHandlers.middlePointSelection = getMiddlePointSelectionHandler();
+        document.body.addEventListener("keydown", selectedFrameHandlers.middlePointSelection);
     }
     function selectedFrameRemoveHandlers() {
         document.body.removeEventListener("keydown", selectedFrameHandlers.keyDown);
         document.body.removeEventListener("mousemove", selectedFrameHandlers.cursorIndicator);
+        document.body.removeEventListener("keydown", selectedFrameHandlers.middlePointSelection);
+    }
+    function getMiddlePointSelectionHandler() {
+        return function (evt) {
+            if (evt.key != 'm') {
+                return;
+            }
+            flags.frameMiddlePointSelection = true;
+            document.body.style.cursor = 'crosshair';
+            hideControlTips('.selected-tips');
+            hideControlTips('.frames-adder');
+            function clickHandler(e) {
+                const ind = findSelectedFrameIndex(e);
+                if (ind != -1) {
+                    const cords = getSpriteCordsFromEvt(e);
+                    const { frames } = curAnimation;
+                    frames.baseBox.middlePoint = getMiddlePointFromCoord(frames, cords, ind);
+                }
+                document.body.removeEventListener("click", clickHandler);
+                document.body.style.cursor = '';
+                flags.frameMiddlePointSelection = false;
+                RTools.drawFrameBoxes(curAnimation.frames, selectedFrameIndex);
+                showControlTips('.selected-tips');
+                showControlTips('.frames-adder');
+            }
+            document.body.addEventListener("click", clickHandler);
+        };
+        function getMiddlePointFromCoord(frames, cords, ind) {
+            let curX = frames.baseBox.left;
+            let curY = frames.baseBox.top;
+            const { frameDeltas: fd } = frames;
+            for (let i = 0; i <= ind; i++) {
+                curX += fd[i].xShift;
+                curY += fd[i].yShift;
+            }
+            return {
+                x: cords.x - curX,
+                y: cords.y - curY
+            };
+        }
     }
     function getSelectedFrameDragStart(ind) {
         return function (evt) {

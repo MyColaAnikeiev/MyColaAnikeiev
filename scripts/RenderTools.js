@@ -71,6 +71,17 @@ var RTools;
         ctx.lineTo(x - 1, y - 1);
         ctx.stroke();
     }
+    function drawMiddlePoint(x, y, midPoint) {
+        x += midPoint.x;
+        y += midPoint.y;
+        ctx.beginPath();
+        ctx.strokeStyle = "#60ff3074";
+        ctx.moveTo(x - 5, y);
+        ctx.lineTo(x + 5, y);
+        ctx.moveTo(x, y - 5);
+        ctx.lineTo(x, y + 5);
+        ctx.stroke();
+    }
     function drawFrameBoxes(frames, selected = -1) {
         drawImage();
         let base = frames.baseBox;
@@ -89,6 +100,9 @@ var RTools;
                 drawCropedArea(base, { left: xShift, top: yShift }, d.crop, selected == i ? "#a059f050" : "#005ff050");
             }
             drawFrameBox(xShift + d.crop.left, yShift + d.crop.top, base.width - (d.crop.left + d.crop.right), base.height - (d.crop.top + d.crop.bottom), selected == i ? "#ff1a5090" : "#a0ffa080");
+            if (base.middlePoint) {
+                drawMiddlePoint(xShift, yShift, base.middlePoint);
+            }
         }
     }
     RTools.drawFrameBoxes = drawFrameBoxes;
