@@ -59,16 +59,16 @@ class SpriteAnimation {
      */
     frameEditingMode() {
         const { html } = this.parent;
-        this.showFrameEditorBlock();
+        this.showeditorTipsBlock();
         this.parent.alowEditing();
         this.flags.frameEditingMode = true;
         AnimationPlayer.start();
         document.body.addEventListener("keydown", this.handlers.addFrame);
         html.mainCanvas.addEventListener("mousedown", this.handlers.frameSelectionClick);
     }
-    showFrameEditorBlock() {
+    showeditorTipsBlock() {
         const html = this.parent.html;
-        html.frameEditorBlock.container.classList.remove('hide');
+        html.editorTipsBlock.container.classList.remove('hide');
     }
     registerAnimation(listItem) {
         this.parent.registerAnimation(listItem, this);

@@ -28,9 +28,9 @@ class Project {
     alowEditing() {
         setTimeout(() => {
             setTimeout(() => {
-                this.flags.editing = false
-            },0);
-        },0);
+                this.flags.editing = false;
+            }, 0);
+        }, 0);
     }
     prohibitEditing() {
         this.flags.editing = true;
@@ -54,14 +54,14 @@ class Project {
                 heightInput: query(".sizes-dialog-back .input-height"),
                 button: query(".sizes-dialog-back button"),
             },
-            frameEditorBlock: {
-                container: byId('frame-editor-block'),
+            editorTipsBlock: {
+                container: byId('editor-tips-block'),
                 frameAdder: {
-                    stage1: query("#frame-editor-block .stage1"),
-                    stage2: query("#frame-editor-block .stage2"),
-                    container: query('#frame-editor-block .frames-adder'),
-                    stickToAxisCheckout: query('#frame-editor-block .frames-adder input'),
-                    selectedNumber: query('#frame-editor-block .frames-adder span.selected')
+                    stage1: query("#editor-tips-block .stage1"),
+                    stage2: query("#editor-tips-block .stage2"),
+                    container: query('#editor-tips-block .frames-adder'),
+                    stickToAxisCheckout: query('#editor-tips-block .frames-adder input'),
+                    selectedNumber: query('#editor-tips-block .frames-adder span.selected')
                 }
             },
             animPreviewControls: {
@@ -69,7 +69,8 @@ class Project {
                 showLast: query("#animation-preview-column button.show-last"),
                 showLast2: query("#animation-preview-column button.show-last2"),
                 showLast3: query("#animation-preview-column button.show-last3"),
-                showAll: query("#animation-preview-column button.show-all")
+                showAll: query("#animation-preview-column button.show-all"),
+                untillSelectedCheckbox: query("#animation-preview-column .untill-selected input")
             },
             scaleControlInput: query("#animation-preview-column .scale-control input")
         };

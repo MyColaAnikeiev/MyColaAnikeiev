@@ -19,6 +19,17 @@ var EditingTools;
         curAnimation = spriteAnimation;
     }
     EditingTools.setAnimation = setAnimation;
+    /* Tips controll */
+    function showControlTips(selector) {
+        document.querySelectorAll(selector).forEach(elm => {
+            elm.classList.remove("hide");
+        });
+    }
+    function hideControlTips(selector) {
+        document.querySelectorAll(selector).forEach(elm => {
+            elm.classList.add("hide");
+        });
+    }
     /* Scale handler */
     function setScaleHandler() {
         scaleHandlerIsSet = true;
@@ -305,14 +316,14 @@ var EditingTools;
     /********************************************************************************
      *  Frame addition handler
      */
-    function frameEditorBlockSetStage(num) {
+    function editorTipsBlockSetStage(num) {
         if (num == 1) {
-            html.frameEditorBlock.frameAdder.stage1.classList.remove("hide");
-            html.frameEditorBlock.frameAdder.stage2.classList.add("hide");
+            html.editorTipsBlock.frameAdder.stage1.classList.remove("hide");
+            html.editorTipsBlock.frameAdder.stage2.classList.add("hide");
         }
         else {
-            html.frameEditorBlock.frameAdder.stage1.classList.add("hide");
-            html.frameEditorBlock.frameAdder.stage2.classList.remove("hide");
+            html.editorTipsBlock.frameAdder.stage1.classList.add("hide");
+            html.editorTipsBlock.frameAdder.stage2.classList.remove("hide");
         }
     }
     function getFrameAdderHandler() {
@@ -323,8 +334,8 @@ var EditingTools;
                 curProject.prohibitEditing();
                 flags.framesMassPosotioning = true;
                 // Bottom panel 
-                frameEditorBlockSetStage(2);
-                let stickToAxis = html.frameEditorBlock.frameAdder.stickToAxisCheckout.checked;
+                editorTipsBlockSetStage(2);
+                let stickToAxis = html.editorTipsBlock.frameAdder.stickToAxisCheckout.checked;
                 curAnimation.stateBasedFrameAdder(1, -1, -1, stickToAxis);
                 document.body.onmousemove = (e) => {
                     let x = e.clientX * EditingTools.canvasScale;
@@ -349,7 +360,7 @@ var EditingTools;
             function cleanUp() {
                 document.body.onmousemove = null;
                 document.body.onmousedown = null;
-                frameEditorBlockSetStage(1);
+                editorTipsBlockSetStage(1);
                 flags.framesMassPosotioning = false;
                 curProject.alowEditing();
             }
@@ -381,23 +392,27 @@ var EditingTools;
                 if (selectedInd == selectedFrameIndex) {
                     return;
                 }
+                // Selecter different frame
                 selectedFrameIndex = selectedInd;
                 selectedFrameRemoveHandlers();
                 selectedSetHandlers(selectedInd);
                 RTools.drawFrameBoxes(curAnimation.frames, selectedInd);
+                AnimationPlayer.selectedFrameSet(selectedInd);
                 return;
             }
-            if (flags.editing)
+            if (flags.editing) {
                 return;
-            curProject.prohibitEditing();
+            }
             selectedInd = findSelectedFrameIndex(evt);
             selectedFrameIndex = selectedInd;
             if (selectedInd == -1) {
-                curProject.alowEditing();
                 return;
             }
+            curProject.prohibitEditing();
             RTools.drawFrameBoxes(curAnimation.frames, selectedInd);
+            AnimationPlayer.selectedFrameSet(selectedInd);
             selectedSetHandlers(selectedInd);
+            showControlTips(".selected-tips");
             flags.frameSelected = true;
         };
     }
@@ -405,6 +420,8 @@ var EditingTools;
     function selectedFrameStateExit() {
         selectedFrameRemoveHandlers();
         flags.frameSelected = false;
+        hideControlTips(".selected-tips");
+        AnimationPlayer.selectedFrameUnset();
         curProject.alowEditing();
     }
     function selectedSetHandlers(selectedInd) {
