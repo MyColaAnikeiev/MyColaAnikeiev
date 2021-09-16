@@ -71,7 +71,10 @@ class Project {
                 showLast2: query("#animation-preview-column button.show-last2"),
                 showLast3: query("#animation-preview-column button.show-last3"),
                 showAll: query("#animation-preview-column button.show-all"),
-                untillSelectedCheckbox: query("#animation-preview-column .untill-selected input")
+                untillSelectedCheckbox: query("#animation-preview-column .untill-selected input"),
+                intervalDisplay: query("#animation-preview-column .speed-controls .display"),
+                intervalDecrBtn: query("#animation-preview-column .speed-controls .down"),
+                intervalIncrBtn: query("#animation-preview-column .speed-controls .up")
             },
             scaleControlInput: query("#animation-preview-column .scale-control input")
         };
