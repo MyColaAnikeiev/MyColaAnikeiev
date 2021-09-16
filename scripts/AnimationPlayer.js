@@ -52,11 +52,16 @@ var AnimationPlayer;
         if (isRunning)
             stop();
         isRunning = true;
-        if (!playUntillSelected || selectedFrameId === null) {
-            currentFrameInd = frames.frameDeltas.length - showOnlyLast;
+        if (playAllFrames) {
+            currentFrameInd = 0;
         }
         else {
-            currentFrameInd = selectedFrameId + 1 - showOnlyLast;
+            if (!playUntillSelected || selectedFrameId === null) {
+                currentFrameInd = frames.frameDeltas.length - showOnlyLast;
+            }
+            else {
+                currentFrameInd = selectedFrameId + 1 - showOnlyLast;
+            }
         }
         if (currentFrameInd < 0) {
             currentFrameInd = 0;
@@ -83,16 +88,17 @@ var AnimationPlayer;
                 currentFrameInd >= (selectedFrameId + 1))) {
             if (playAllFrames) {
                 currentFrameInd = 0;
-                return;
-            }
-            if (!playUntillSelected || selectedFrameId === null) {
-                currentFrameInd = framesCount - showOnlyLast;
             }
             else {
-                currentFrameInd = selectedFrameId + 1 - showOnlyLast;
-            }
-            if (currentFrameInd < 0) {
-                currentFrameInd = 0;
+                if (!playUntillSelected || selectedFrameId === null) {
+                    currentFrameInd = framesCount - showOnlyLast;
+                }
+                else {
+                    currentFrameInd = selectedFrameId + 1 - showOnlyLast;
+                }
+                if (currentFrameInd < 0) {
+                    currentFrameInd = 0;
+                }
             }
         }
         timeoutId = setTimeout(next, timeInterval);
