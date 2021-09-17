@@ -530,8 +530,10 @@ var EditingTools;
             // Streching
             if (diff < 0) {
                 baseBox.left += diff;
-                baseBox.middlePoint.x -= diff;
                 baseBox.width -= diff;
+                if (baseBox.middlePoint) {
+                    baseBox.middlePoint.x -= diff;
+                }
                 for (let i = 0; i < fd.length; i++) {
                     if (i == curInd) {
                         continue;
@@ -551,8 +553,10 @@ var EditingTools;
             }, NaN);
             if (unusedLeftCrop) {
                 baseBox.left += unusedLeftCrop;
-                baseBox.middlePoint.x -= unusedLeftCrop;
                 baseBox.width -= unusedLeftCrop;
+                if (baseBox.middlePoint) {
+                    baseBox.middlePoint.x -= unusedLeftCrop;
+                }
                 fd.forEach(f => {
                     f.crop.left -= unusedLeftCrop;
                 });
@@ -591,7 +595,9 @@ var EditingTools;
             if (diff < 0) {
                 baseBox.top += diff;
                 baseBox.height -= diff;
-                baseBox.middlePoint.y -= diff;
+                if (baseBox.middlePoint) {
+                    baseBox.middlePoint.y -= diff;
+                }
                 for (let i = 0; i < fd.length; i++) {
                     if (i == curInd) {
                         continue;
@@ -611,8 +617,10 @@ var EditingTools;
             }, NaN);
             if (unusedUpCrop) {
                 baseBox.top += unusedUpCrop;
-                baseBox.middlePoint.y -= unusedUpCrop;
                 baseBox.height -= unusedUpCrop;
+                if (baseBox.middlePoint) {
+                    baseBox.middlePoint.y -= unusedUpCrop;
+                }
                 fd.forEach(f => {
                     f.crop.top -= unusedUpCrop;
                 });
